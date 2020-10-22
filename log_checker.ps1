@@ -23,7 +23,7 @@ If ($FileExists -eq $True)
     If ($SEL -ne $null) {\\do smthg if OK}
     Else
     {
-		$MailText = Select-String -Pattern "input what you are looking for in log" -Path $WantFile -Context 5,3
+	$MailText = Select-String -Pattern "input what you are looking for in log" -Path $WantFile -Context 5,3 | Select-Object -ExpandProperty Line
         $MailText = "Input what you want to send via mail part 1 `n`n`n" + $MailText + "`n`n`n part 2  " + $WantFile
         Send-Mail -$MailText
     }
