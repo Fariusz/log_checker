@@ -20,7 +20,7 @@ $FileExists = Test-Path $WantFile
 If ($FileExists -eq $True)
 {
     $SEL = Select-String -Path $WantFile -Pattern "Total failed to send = 0"
-    If ($SEL -ne $null) {\\do smthg if OK}
+    If ($SEL -ne $null) {#do smthg if OK}
     Else
     {
 	$MailText = Select-String -Pattern "input what you are looking for in log" -Path $WantFile -Context 5,3 | Select-Object -ExpandProperty Line
