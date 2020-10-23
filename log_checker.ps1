@@ -23,8 +23,22 @@ If ($FileExists -eq $True)
     If ($SEL -ne $null) {#do smthg if OK}
     Else
     {
-	$MailText = Select-String -Pattern "input what you are looking for in log" -Path $WantFile -Context 5,3 | Select-Object -ExpandProperty Line
-        $MailText = "Input what you want to send via mail part 1 `n`n`n" + $MailText + "`n`n`n part 2  " + $WantFile
+    #IF YOU ARE LOOKING JUST FOR 1 LINE 
+	#$MailText = Select-String -Pattern "input what you are looking for in log" -Path $WantFile | Select-Object -ExpandProperty Line
+        #$MailText = "Input what you want to send via mail part 1 `n`n`n" + $MailText + "`n`n`n part 2  " + $WantFile
+        Send-Mail -$MailText
+	#if you are looking for multiple lines
+	 $Phrase1 = "Problem dotyczy: `n`n"
+		foreach ($line in ( Select-String -Pattern "user:*" -Path $WantFile ) )
+		{
+			$Phrase1 = $Phrase1 + "`n" + $line.line    
+		}
+		$Phrase2 = "Zawartość loga to:`n`n`n"
+		foreach ($line in ( Select-String -Pattern "Fail*" -Path $WantFile ) )
+		{
+			$Phrase2 = $Phrase2 + "`n" + ">" + $line.line    
+		}
+        $MailText = "some text to add to mail`n`n`n" + $Phrase1 + "`n`n`n" + $Phrase2 + "`n`n`n`nopen log here::  " + $WantFile
         Send-Mail -$MailText
     }
 }
